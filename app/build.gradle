@@ -1,0 +1,51 @@
+apply plugin: 'com.android.application'
+
+android {
+	namespace 'com.cgogolin.penandpdf'
+	compileSdkVersion 33
+	defaultConfig {
+		minSdkVersion 21
+		targetSdkVersion 33
+		ndkVersion '12.1.2977051'
+		versionName '1.4.0'
+		versionCode 68
+
+		externalNativeBuild.ndkBuild.arguments '-j4'
+		ndk {
+			abiFilters 'armeabi-v7a'
+		}
+	}
+
+	compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+	externalNativeBuild {
+		ndkBuild.path 'src/main/jni/Android.mk'
+	}
+	
+	if (project.hasProperty('release_storeFile')) {
+		signingConfigs {
+			release {
+				storeFile file(release_storeFile)
+				storePassword release_storePassword
+				keyAlias release_keyAlias
+				keyPassword release_keyPassword
+			}
+		}
+		buildTypes {
+			release {
+				signingConfig signingConfigs.release
+				ndk {
+					debugSymbolLevel 'FULL'
+				}
+			}
+		}
+	}
+}
+
+dependencies {
+	implementation 'androidx.appcompat:appcompat:1.5.1'
+	implementation 'com.google.android.material:material:1.7.0'
+}
