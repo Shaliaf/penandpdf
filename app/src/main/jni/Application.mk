@@ -35,9 +35,12 @@ else
 APP_OPTIM := release
 endif
 endif
-ifdef V8_BUILD
-APP_STL := stlport_static
-endif
+# ifdef V8_BUILD
+# APP_STL := stlport_static
+# APP_STL := c++_static
+# APP_STL := -std=c++11
+# APP_STL := c++_shared
+# endif
 ifdef MEMENTO
 APP_CFLAGS += -DMEMENTO -DMEMENTO_LEAKONLY
 endif

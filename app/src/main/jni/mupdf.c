@@ -2189,7 +2189,7 @@ JNI_FN(MuPDFCore_getAnnotationsInternal)(JNIEnv * env, jobject thiz, int pageNum
     globals *glo = get_globals(env, thiz);
     fz_context *ctx = glo->ctx;
     
-    if (glo == NULL) return;
+    if (glo == NULL) return NULL;
 
     annotClass = (*env)->FindClass(env, PACKAGENAME "/Annotation");
     if (annotClass == NULL) fz_throw(ctx, FZ_ERROR_GENERIC, "FindClass");

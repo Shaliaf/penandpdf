@@ -6,7 +6,7 @@ android {
 	defaultConfig {
 		minSdkVersion 21
 		targetSdkVersion 33
-		ndkVersion '12.1.2977051'
+		ndkVersion '26.1.10909125'
 		versionName '1.4.0'
 		versionCode 68
 
