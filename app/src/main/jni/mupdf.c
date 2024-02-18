@@ -101,7 +101,7 @@ static const jchar PDFDocEncoding[] = {
 
 typedef struct rect_node_s rect_node;
 
-typedef enum { false, true } bool;
+//typedef enum { false, true } bool;
 
 struct rect_node_s
 {
