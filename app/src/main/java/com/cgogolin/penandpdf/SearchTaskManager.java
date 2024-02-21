@@ -1,8 +1,5 @@
 package com.cgogolin.penandpdf;
 
-import java.lang.Runnable;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,7 +7,6 @@ import android.graphics.RectF;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.widget.Toast;
-import android.util.Log;
 
 
 class SearchProgressDialog extends ProgressDialog {
@@ -41,14 +37,14 @@ class SearchProgressDialog extends ProgressDialog {
         super.dismiss();
     }
 }
-                      
+
 public abstract class SearchTaskManager {
     private static final int SEARCH_PROGRESS_DELAY = 1000;
     protected final Context mContext;
     private final MuPDFCore mCore;
     private final Handler mHandler;
-    private AsyncTask<Void,Integer,SearchResult> mSearchTask;
-    
+    private AsyncTask<Void, Integer, SearchResult> mSearchTask;
+
     public SearchTaskManager(Context context, MuPDFCore core) {
         mContext = context;
         mCore = core;
@@ -56,8 +52,9 @@ public abstract class SearchTaskManager {
     }
 
     protected abstract void onTextFound(SearchResult result);
+
     protected abstract void goToResult(SearchResult result);
-    
+
     public void start(final String text, int direction, int displayPage) {
         if (mCore == null)
             return;
@@ -71,62 +68,57 @@ public abstract class SearchTaskManager {
         progressDialog.setProgressPercentFormat(null);
         progressDialog.setTitle(mContext.getString(R.string.searching_));
         progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialog) {
-                    stop();
-                }
-            });
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                stop();
+            }
+        });
         progressDialog.setMax(mCore.countPages());
 
-        mSearchTask = new AsyncTask<Void,Integer,SearchResult>() {
+        mSearchTask = new AsyncTask<Void, Integer, SearchResult>() {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
                 progressDialog.setProgress(startIndex);
                 mHandler.postDelayed(new Runnable() {
-                        public void run() {
-                            if(!(progressDialog.isCancelled() || progressDialog.isDismissed() ))
-                            {
-                                progressDialog.show();
-                            }
+                    public void run() {
+                        if (!(progressDialog.isCancelled() || progressDialog.isDismissed())) {
+                            progressDialog.show();
                         }
-                    }, SEARCH_PROGRESS_DELAY);
+                    }
+                }, SEARCH_PROGRESS_DELAY);
             }
-            
+
             @Override
             protected SearchResult doInBackground(Void... params) {
                 SearchResult firstResult = null;
                 int index = startIndex;
-                do
-                {
-                    publishProgress(index+1);
+                do {
+                    publishProgress(index + 1);
                     RectF searchHits[] = mCore.searchPage(index, text);
-                    if (searchHits != null && searchHits.length > 0)
-                    {
+                    if (searchHits != null && searchHits.length > 0) {
                         final SearchResult result = new SearchResult(text, index, searchHits, increment);
-                        if(increment == 1)
+                        if (increment == 1)
                             result.focusFirst();
                         else
                             result.focusLast();
                         onTextFound(result);
-                        if(firstResult == null)
-                        {
+                        if (firstResult == null) {
                             firstResult = result;
-                            mHandler.post(new Runnable() 
-                                {
-                                    @Override
-                                    public void run() {
-                                       progressDialog.dismiss();
-                                       goToResult(result);
-                                    }
-                                }
-                                );
+                            mHandler.post(new Runnable() {
+                                              @Override
+                                              public void run() {
+                                                  progressDialog.dismiss();
+                                                  goToResult(result);
+                                              }
+                                          }
+                            );
                         }
                     }
-                    index = (index+increment % mCore.countPages() + mCore.countPages()) % mCore.countPages();
+                    index = (index + increment % mCore.countPages() + mCore.countPages()) % mCore.countPages();
                 }
-                while(index != (startIndex % mCore.countPages() + mCore.countPages()) % mCore.countPages() && !isCancelled());
-                    
+                while (index != (startIndex % mCore.countPages() + mCore.countPages()) % mCore.countPages() && !isCancelled());
+
                 return firstResult;
             }
 
@@ -134,7 +126,8 @@ public abstract class SearchTaskManager {
             protected void onPostExecute(SearchResult result) {
                 super.onPostExecute(result);
                 progressDialog.cancel();
-                if(result == null) Toast.makeText(mContext, R.string.text_not_found, Toast.LENGTH_SHORT).show();
+                if (result == null)
+                    Toast.makeText(mContext, R.string.text_not_found, Toast.LENGTH_SHORT).show();
             }
 
             @Override

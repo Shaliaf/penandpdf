@@ -12,7 +12,7 @@ public class LinkInfoExternal extends LinkInfo {
         visitor.visitExternal(this);
     }
 
-    public LinkType type(){
+    public LinkType type() {
         return LinkType.External;
     }
 }

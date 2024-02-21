@@ -23,11 +23,11 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Parcelable;
-//import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.PagerAdapter;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.viewpager.widget.PagerAdapter;
 
 /**
  * Implementation of {@link androidx.viewpager.widget.PagerAdapter} that
@@ -50,20 +50,20 @@ import android.view.ViewGroup;
  *
  * <p>Here is an example implementation of a pager containing fragments of
  * lists:
- *
+ * <p>
  * {@sample development/samples/Support13Demos/src/com/example/android/supportv13/app/FragmentPagerSupport.java
- *      complete}
+ * complete}
  *
  * <p>The <code>R.layout.fragment_pager</code> resource of the top-level fragment is:
- *
+ * <p>
  * {@sample development/samples/Support13Demos/res/layout/fragment_pager.xml
- *      complete}
+ * complete}
  *
  * <p>The <code>R.layout.fragment_pager_list</code> resource containing each
  * individual fragment's layout is:
- *
+ * <p>
  * {@sample development/samples/Support13Demos/res/layout/fragment_pager_list.xml
- *      complete}
+ * complete}
  */
 public abstract class FragmentPagerAdapter extends PagerAdapter {
     private static final String TAG = "FragmentPagerAdapter";
@@ -118,13 +118,13 @@ public abstract class FragmentPagerAdapter extends PagerAdapter {
             mCurTransaction = mFragmentManager.beginTransaction();
         }
         if (DEBUG) Log.v(TAG, "Detaching item #" + position + ": f=" + object
-                + " v=" + ((Fragment)object).getView());
-        mCurTransaction.detach((Fragment)object);
+                + " v=" + ((Fragment) object).getView());
+        mCurTransaction.detach((Fragment) object);
     }
 
     @Override
     public void setPrimaryItem(ViewGroup container, int position, Object object) {
-        Fragment fragment = (Fragment)object;
+        Fragment fragment = (Fragment) object;
         if (fragment != mCurrentPrimaryItem) {
             if (mCurrentPrimaryItem != null) {
                 mCurrentPrimaryItem.setMenuVisibility(false);
@@ -149,7 +149,7 @@ public abstract class FragmentPagerAdapter extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
-        return ((Fragment)object).getView() == view;
+        return ((Fragment) object).getView() == view;
     }
 
     @Override

@@ -8,7 +8,7 @@ public class RecentFile extends Object {
     private String displayName;
     private String bitmapString = null;
 
-    
+
     public RecentFile(String recentFileString) {
         init(recentFileString, null, System.currentTimeMillis(), null);
     }
@@ -28,7 +28,7 @@ public class RecentFile extends Object {
     public RecentFile(RecentFile recentFile) {
         init(recentFile.getRecentFileString(), recentFile.getDisplayName(), recentFile.getLastOpened(), recentFile.getThumbnailString());
     }
-    
+
     protected void init(String recentFileString, String displayName, long lastOpened, String bitmapString) {
         this.recentFileString = recentFileString;
         this.lastOpened = lastOpened;
@@ -39,11 +39,11 @@ public class RecentFile extends Object {
     public String getRecentFileString() {
         return recentFileString;
     }
-    
+
     public Uri getUri() {
         return Uri.parse(recentFileString);
     }
-    
+
     public String getFileString() {
         return recentFileString;
     }
@@ -56,15 +56,15 @@ public class RecentFile extends Object {
         return displayName;
     }
 
-    
+
     @Override
     public boolean equals(Object obj) {
-        if (obj== null || !(obj instanceof RecentFile))
+        if (obj == null || !(obj instanceof RecentFile))
             return false;
         if (obj == this)
             return true;
-        
-        RecentFile recentFile = (RecentFile)obj;
+
+        RecentFile recentFile = (RecentFile) obj;
         return recentFile.getFileString().equals(getFileString());
     }
 

@@ -2,12 +2,11 @@ package com.cgogolin.penandpdf;
 
 //Code mostly taken from http://stackoverflow.com/questions/19788386/set-unchangeable-some-part-of-edittext-android/19789317#19789317 and slightly edited
 
-import android.graphics.drawable.Drawable;
-import android.graphics.Paint;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
+import android.graphics.Paint;
 import android.graphics.PixelFormat;
-import java.lang.Math;
+import android.graphics.drawable.Drawable;
 
 
 public class TextDrawable extends Drawable {
@@ -46,6 +45,6 @@ public class TextDrawable extends Drawable {
 
     @Override
     public int getIntrinsicWidth() {
-        return (int)Math.ceil(paint.measureText(text));
+        return (int) Math.ceil(paint.measureText(text));
     }
 }

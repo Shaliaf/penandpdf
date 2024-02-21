@@ -1,9 +1,17 @@
 package com.cgogolin.penandpdf;
 
 public class MuPDFAlert {
-    public enum IconType {Error,Warning,Question,Status};
-    public enum ButtonPressed {None,Ok,Cancel,No,Yes};
-    public enum ButtonGroupType {Ok,OkCancel,YesNo,YesNoCancel};
+    public enum IconType {Error, Warning, Question, Status}
+
+    ;
+
+    public enum ButtonPressed {None, Ok, Cancel, No, Yes}
+
+    ;
+
+    public enum ButtonGroupType {Ok, OkCancel, YesNo, YesNoCancel}
+
+    ;
 
     public final String message;
     public final IconType iconType;

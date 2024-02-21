@@ -7,97 +7,76 @@ import java.util.concurrent.ExecutionException;
 
 // Ideally this would be a subclass of AsyncTask, however the cancel() method is final, and cannot
 // be overridden. I felt that having two different, but similar cancel methods was a bad idea.
-public class CancellableAsyncTask<Params, Result>
-{
-	private final AsyncTask<Params, Void, Result> asyncTask;
-	private final CancellableTaskDefinition<Params, Result> ourTask;
+public class CancellableAsyncTask<Params, Result> {
+    private final AsyncTask<Params, Void, Result> asyncTask;
+    private final CancellableTaskDefinition<Params, Result> ourTask;
 
-	protected void onPreExecute()
-	{
+    protected void onPreExecute() {
 
-	}
+    }
 
-	protected void onPostExecute(Result result)
-	{
+    protected void onPostExecute(Result result) {
 
-	}
+    }
 
-	protected void onCanceled()
-    {
-            
-	}
-    
-	public CancellableAsyncTask(final CancellableTaskDefinition<Params, Result> task)
-	{
-		if (task == null)
-				throw new IllegalArgumentException();
+    protected void onCanceled() {
 
-		this.ourTask = task;
-		asyncTask = new AsyncTask<Params, Void, Result>()
-				{
-					@Override
-					protected Result doInBackground(Params... params)
-					{
-						return task.doInBackground(params);
-					}
+    }
 
-					@Override
-					protected void onPreExecute()
-					{
-						CancellableAsyncTask.this.onPreExecute();
-					}
+    public CancellableAsyncTask(final CancellableTaskDefinition<Params, Result> task) {
+        if (task == null)
+            throw new IllegalArgumentException();
 
-					@Override
-					protected void onPostExecute(Result result)
-					{
-						CancellableAsyncTask.this.onPostExecute(result);
-						task.doCleanup();
-					}
+        this.ourTask = task;
+        asyncTask = new AsyncTask<Params, Void, Result>() {
+            @Override
+            protected Result doInBackground(Params... params) {
+                return task.doInBackground(params);
+            }
 
-						//We rather do the cleanup here so that we can cancel the task with cancel() from the UI thread 
-					@Override
-					protected void onCancelled(Result result)
-					{
-						cleanUp();
-					}
-				};
-	}
+            @Override
+            protected void onPreExecute() {
+                CancellableAsyncTask.this.onPreExecute();
+            }
 
-	public void cancel()
-	{
-		this.asyncTask.cancel(true);
-		ourTask.doCancel();
-	}
+            @Override
+            protected void onPostExecute(Result result) {
+                CancellableAsyncTask.this.onPostExecute(result);
+                task.doCleanup();
+            }
 
-	private void cleanUp()
-	{
-		ourTask.doCleanup();
-	}
-	
-	public void cancelAndWait()
-	{
-		cancel();
+            //We rather do the cleanup here so that we can cancel the task with cancel() from the UI thread
+            @Override
+            protected void onCancelled(Result result) {
+                cleanUp();
+            }
+        };
+    }
 
-		try
-		{
-			this.asyncTask.get();
-		}
-		catch (InterruptedException e)
-		{
-		}
-		catch (ExecutionException e)
-		{
-		}
-		catch (CancellationException e)
-		{
-		}
+    public void cancel() {
+        this.asyncTask.cancel(true);
+        ourTask.doCancel();
+    }
 
-		cleanUp();
-	}
+    private void cleanUp() {
+        ourTask.doCleanup();
+    }
 
-	public void execute(Params ... params)
-	{
-		asyncTask.execute(params);
-	}
+    public void cancelAndWait() {
+        cancel();
+
+        try {
+            this.asyncTask.get();
+        } catch (InterruptedException e) {
+        } catch (ExecutionException e) {
+        } catch (CancellationException e) {
+        }
+
+        cleanUp();
+    }
+
+    public void execute(Params... params) {
+        asyncTask.execute(params);
+    }
 
 }

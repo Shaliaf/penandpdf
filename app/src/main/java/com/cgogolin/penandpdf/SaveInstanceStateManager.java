@@ -9,23 +9,22 @@ package com.cgogolin.penandpdf;
  * platforms one shouldn't save a marshaled bundle to permanent storage. Here we are only saving to a temporary file wich is deleted when the VM exits and this should be OK.
  * See also: https://developer.android.com/reference/android/os/Parcel.html#marshall(). */
 
-import android.content.Context;
 import android.os.Bundle;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileInputStream;
 import android.os.Parcel;
-import java.lang.ClassLoader;
 
-final class SaveInstanceStateManager
-{
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
+final class SaveInstanceStateManager {
     private static String bundleFileNamePrefix = "instanceState";
     private static String bundleFileNameMarkerString = "bundleWasSavedToFileWithName";
-    
-    private SaveInstanceStateManager() {}
+
+    private SaveInstanceStateManager() {
+    }
 
     static public Bundle saveBundleIfNecessary(Bundle bundle) {
-        
+
         FileOutputStream fos = null;
         try {
             File bundleFile = File.createTempFile(bundleFileNamePrefix, null);
@@ -39,19 +38,20 @@ final class SaveInstanceStateManager
             bundle.putString(bundleFileNameMarkerString, bundleFile.getAbsolutePath());
         } catch (Exception e) {
         } finally {
-            if(fos!=null)
+            if (fos != null)
                 try {
                     fos.close();
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
         }
         return bundle;
     }
-    
+
     static public Bundle recoverBundleIfNecessary(Bundle bundle, ClassLoader classLoader) {
-        if(bundle == null)
+        if (bundle == null)
             return bundle;
         String path = bundle.getString(bundleFileNameMarkerString, null);
-        if(path == null)
+        if (path == null)
             return bundle; //The Bundle was apparently not saved so we simply return it unchanged
 
         Bundle out = null;
@@ -68,18 +68,18 @@ final class SaveInstanceStateManager
             out = parcel.readBundle(classLoader);
         } catch (Exception e) {
         } finally {
-            if(parcel!=null)
+            if (parcel != null)
                 parcel.recycle();
-            if(fis!=null)
-                try 
-                {
+            if (fis != null)
+                try {
                     fis.close();
-                } catch (Exception e) {}
+                } catch (Exception e) {
+                }
         }
-        try
-        {
+        try {
             bundleFile.delete();
-        } catch(Exception e) {}
+        } catch (Exception e) {
+        }
 
         return out;
     }

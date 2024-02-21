@@ -1,12 +1,12 @@
 package com.cgogolin.penandpdf;
 
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import java.util.LinkedList;
 
 public class ChoosePDFAdapter extends BaseAdapter {
@@ -47,7 +47,8 @@ public class ChoosePDFAdapter extends BaseAdapter {
             case NEW:
             case DOC:
                 return R.drawable.ic_doc;
-            default: return 0;
+            default:
+                return 0;
         }
     }
 
@@ -59,8 +60,8 @@ public class ChoosePDFAdapter extends BaseAdapter {
             v = convertView;
         }
         ChoosePDFItem item = mItems.get(position);
-        ((TextView)v.findViewById(R.id.name)).setText(item.name);
-        ((ImageView)v.findViewById(R.id.icon)).setImageResource(iconForType(item.type));
+        ((TextView) v.findViewById(R.id.name)).setText(item.name);
+        ((ImageView) v.findViewById(R.id.icon)).setImageResource(iconForType(item.type));
         return v;
     }
 

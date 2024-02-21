@@ -11,7 +11,7 @@ public class TextWord extends RectF {
     }
 
     public void add(TextChar tc) {
-        if(isEmpty())
+        if (isEmpty())
             super.set(tc);
         else
             super.union(tc);
@@ -19,19 +19,19 @@ public class TextWord extends RectF {
     }
 
     public void add(TextWord tw) {
-        if(isEmpty())
+        if (isEmpty())
             super.set(tw);
         else
             super.union(tw);
         w = w.concat(tw.w);
     }
-    
+
 
     public boolean intersects(TextWord wd) {
-        return RectF.intersects(this,wd);
+        return RectF.intersects(this, wd);
     }
 
     public boolean equals(TextWord wd) {
-        return super.equals((RectF)wd) && w.equals(wd.w);
+        return super.equals((RectF) wd) && w.equals(wd.w);
     }
 }
