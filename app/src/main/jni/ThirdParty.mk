@@ -4,6 +4,8 @@ include $(CLEAR_VARS)
 
 MY_ROOT := $(LOCAL_PATH)/mupdf
 
+echo debug here ThirdParty
+
 LOCAL_C_INCLUDES := \
 	$(MY_ROOT)/thirdparty/jbig2dec \
 	$(MY_ROOT)/thirdparty/openjpeg/libopenjpeg \
